@@ -1,6 +1,7 @@
 package com.kh.demo.domain.product.dao;
 
 import com.kh.demo.domain.entity.Product;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -8,7 +9,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 
+@Slf4j
 @Repository //dao역할을 하는 클래스
 public class ProductDAOImpl implements ProductDAO{
 
@@ -27,9 +30,11 @@ public class ProductDAOImpl implements ProductDAO{
     // SQL파라미터 자동매핑
     SqlParameterSource param = new BeanPropertySqlParameterSource(product);
     KeyHolder keyHolder = new GeneratedKeyHolder();
-    template.update(sql.toString(),param,keyHolder,new String[]{"product_id"});
-    long productId = keyHolder.getKey().longValue(); //상품아이디
-    
-    return productId;
+//    template.update(sql.toString(),param,keyHolder,new String[]{"product_id"});
+    template.update(sql.toString(),param,keyHolder,new String[]{"product_id","pname","quantity"});
+//    long productId = keyHolder.getKey().longValue(); //상품아이디
+//    log.info("keyHolder={}", keyHolder.getKeys());
+    Long product_id = ((BigDecimal)keyHolder.getKeys().get("product_id")).longValue(); //상품아이디
+    return product_id;
   }
 }
