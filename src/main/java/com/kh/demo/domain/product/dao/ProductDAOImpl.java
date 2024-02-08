@@ -12,6 +12,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -58,5 +59,16 @@ public class ProductDAOImpl implements ProductDAO{
       //조회결과가 없는경우
       return Optional.empty();
     }
+  }
+
+  @Override
+  public List<Product> findAll() {
+    StringBuffer sql = new StringBuffer();
+    sql.append("select product_id,pname,quantity,price,cdate,udate ");
+    sql.append("  from product ");
+
+    List<Product> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Product.class));
+
+    return list;
   }
 }

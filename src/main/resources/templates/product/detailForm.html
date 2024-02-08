@@ -14,10 +14,16 @@
   <div><label for="quantity">수량</label><input id="quantity" name="quantity" type="text" th:value="${product.quantity}" readonly></div>
   <div><label for="price">가격</label><input id="price" name="price" type="text" th:value="${product.price}" readonly></div>
   <div>
-    <input type="button" value="수정">
-    <input type="button" value="삭제">
-    <input type="button" value="목록">
+    <input id="modifyBtn" type="button" value="수정">
+    <input id="deleteBtn" type="button" value="삭제">
+    <input id="listBtn" type="button" value="목록">
   </div>
 </form>
+<script>
+  const $modifyBtn = document.getElementById('listBtn');
+  $modifyBtn.addEventListener('click',e=>{
+    location.href = '/products';      // GET http://서버주소 or 서버도메인/products
+  }, false);
+</script>
 </body>
 </html>

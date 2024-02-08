@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -54,5 +55,14 @@ public class ProductController {
     model.addAttribute("product", product);
 
     return "product/detailForm"; // 상품조회화면
+  }
+
+  @GetMapping   // GET http://localhost:9080/products
+  public String findAll(Model model){
+
+    List<Product> list = productSVC.findAll();
+    model.addAttribute("list", list);
+
+    return "product/all";
   }
 }
