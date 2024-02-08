@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.Optional;
+
 @Slf4j
 @SpringBootTest  // springboot테스트환경 실행
 class ProductDAOImplTest {
@@ -22,5 +24,13 @@ class ProductDAOImplTest {
 
     Long productId = productDAO.save(product);
     log.info("productId={}{}", productId,"2");
+  }
+
+  @Test
+  void findById() {
+    Long productId = 1L;
+    Optional<Product> findedProduct = productDAO.findById(productId);
+    Product product = findedProduct.orElse(null);
+    log.info("product={}", product);
   }
 }

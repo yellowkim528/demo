@@ -7,7 +7,17 @@
   <title>상품조회</title>
 </head>
 <body>
-상품조회
-<label for="">상품번호</label><input type="text" th:value="${productId}">
+<h3>상품조회</h3>
+<form action="#" method="post">
+  <div><label for="">상품번호</label><input type="text" th:value="${product.productId}" readonly></div>
+  <div><label for="pname">상품명</label><input id="pname" name="pname" type="text" th:value="${product.pname}" readonly></div>
+  <div><label for="quantity">수량</label><input id="quantity" name="quantity" type="text" th:value="${product.quantity}" readonly></div>
+  <div><label for="price">가격</label><input id="price" name="price" type="text" th:value="${product.price}" readonly></div>
+  <div>
+    <input type="button" value="수정">
+    <input type="button" value="삭제">
+    <input type="button" value="목록">
+  </div>
+</form>
 </body>
 </html>

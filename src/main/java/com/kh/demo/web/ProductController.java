@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Optional;
+
 @Slf4j
 @Controller // Controller 역할을 하는 클래스
 @RequestMapping("/products")    // http://localhost:9080/products
@@ -23,7 +25,6 @@ public class ProductController {
   //상품등록양식
   @GetMapping("/add")         // Get, http://localhost:9080/products/add
   public String addForm() {
-
     return "product/add";     // view이름  상품등록화면
   }
 
@@ -45,8 +46,12 @@ public class ProductController {
 
     Long productId = productSVC.save(product);
     log.info("상품번호={}", productId);
-    model.addAttribute("productId", productId);
+//    model.addAttribute("productId", productId);
     //상품조회
+    Optional<Product> findedProduct = productSVC.findById(productId);
+    product = findedProduct.orElseThrow();
+
+    model.addAttribute("product", product);
 
     return "product/detailForm"; // 상품조회화면
   }
