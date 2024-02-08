@@ -5,10 +5,7 @@ import com.kh.demo.domain.product.svc.ProductSVC;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +54,19 @@ public class ProductController {
     return "product/detailForm"; // 상품조회화면
   }
 
+  //조회
+  @GetMapping("/{pid}/detail")       //GET http://localhost:9080/products/상품번호/detail
+  public String findById(@PathVariable("pid") Long productId, Model model){
+
+    Optional<Product> findedProduct = productSVC.findById(productId);
+    Product product = findedProduct.orElseThrow();
+    model.addAttribute("product", product);
+
+    return "product/detailForm";
+  }
+  
+  
+  //목록
   @GetMapping   // GET http://localhost:9080/products
   public String findAll(Model model){
 

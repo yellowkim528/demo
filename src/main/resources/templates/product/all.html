@@ -5,6 +5,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>상품목록</title>
+  <style>
+    * {outline:1px solid red;}
+    .row:hover {
+       background-color : yellow;
+    }
+  </style>
 </head>
 <body>
 <h3>상품목록</h3>
@@ -17,13 +23,30 @@
         <td>상품명</td>
       </tr>
     </thead>
-    <tbody>
-      <tr th:each="product :${list}">
+    <tbody id="rows">
+      <tr class="row" th:each="product :${list}"  th:data-product-id="${product.productId}">
         <td th:text="${product.productId}"></td>
+        <!--/*  <td><a th:href="|products/${product.productId}/detail|" th:text="${product.pname}"></a></td> */-->
+        <!--/* <td><a th:href="@{/products/{productId}/detail(productId=${product.productId})}" th:text="${product.pname}"></a></td> */-->
         <td th:text="${product.pname}"></td>
       </tr>
     </tbody>
   </table>
 </div>
+<div><button id="addBtn">등록</button></div>
+<script>
+  const $addBtn = document.getElementById('addBtn');
+  $addBtn.addEventListener('click', evt=>{
+    location.href = '/products/add';
+  });
+
+  const $rows = document.getElementById('rows');
+  $rows.addEventListener('click',evt=>{
+    const $row = evt.target.closest('.row');
+    const productId = $row.dataset.productId;
+    location.href = `/products/${productId}/detail`;
+  });
+
+</script>
 </body>
 </html>
