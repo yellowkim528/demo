@@ -29,6 +29,11 @@ public class ProductSVCImpl implements ProductSVC{
   }
 
   @Override
+  public int deleteById(Long productId) {
+    return productDAO.deleteById(productId);
+  }
+
+  @Override
   public List<Product> findAll() {
     return productDAO.findAll();
   }

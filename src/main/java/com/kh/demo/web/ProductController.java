@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +33,8 @@ public class ProductController {
           @RequestParam("pname") String pname,
           @RequestParam("quantity") Long quantity,
           @RequestParam("price") Long price,
-          Model model
+          Model model,
+          RedirectAttributes redirectAttributes
           ){
 
     log.info("pname={}, {}, {}", pname,quantity,price);
@@ -44,14 +46,9 @@ public class ProductController {
 
     Long productId = productSVC.save(product);
     log.info("상품번호={}", productId);
-//    model.addAttribute("productId", productId);
-    //상품조회
-    Optional<Product> findedProduct = productSVC.findById(productId);
-    product = findedProduct.orElseThrow();
 
-    model.addAttribute("product", product);
-
-    return "product/detailForm"; // 상품조회화면
+    redirectAttributes.addAttribute("pid",productId);
+    return "redirect:/products/{pid}/detail"; // 상품조회화면  302 GET http://서버:9080/products/상품번호/detail
   }
 
   //조회
@@ -64,7 +61,18 @@ public class ProductController {
 
     return "product/detailForm";
   }
-  
+
+  //삭제
+  @GetMapping("/{pid}/del")
+  public String deleteById(@PathVariable("pid") Long productId){
+    log.info("deleteById={}",productId);
+
+    //1)상품 삭제 -> 상품테이블에서 삭제
+    int deletedRowCnt = productSVC.deleteById(productId);
+    
+    return "redirect:/products";     // GET http://localhost:9080/products/
+  }
+
   
   //목록
   @GetMapping   // GET http://localhost:9080/products

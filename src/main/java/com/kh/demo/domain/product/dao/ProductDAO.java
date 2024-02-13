@@ -16,6 +16,10 @@ public interface ProductDAO {
   List<Product> findAll();
 
   //단건삭제
+  int deleteById(Long productId);
+
   //여러건삭제
+  //int deleteByIds(List<Long> productIds);
+
   //수정
 }

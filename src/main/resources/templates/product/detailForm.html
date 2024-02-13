@@ -9,7 +9,7 @@
 <body>
 <h3>상품조회</h3>
 <form action="#" method="post">
-  <div><label for="">상품번호</label><input type="text" th:value="${product.productId}" readonly></div>
+  <div><label for="">상품번호</label><input id="productId" type="text" th:value="${product.productId}" readonly></div>
   <div><label for="pname">상품명</label><input id="pname" name="pname" type="text" th:value="${product.pname}" readonly></div>
   <div><label for="quantity">수량</label><input id="quantity" name="quantity" type="text" th:value="${product.quantity}" readonly></div>
   <div><label for="price">가격</label><input id="price" name="price" type="text" th:value="${product.price}" readonly></div>
@@ -21,9 +21,15 @@
 </form>
 <script>
   const $modifyBtn = document.getElementById('listBtn');
+  const $deleteBtn = document.getElementById('deleteBtn');
   $modifyBtn.addEventListener('click',e=>{
     location.href = '/products';      // GET http://서버주소 or 서버도메인/products
   }, false);
+  $deleteBtn.addEventListener('click',e=>{
+    if(!window.confirm('삭제하시겠습니까')) return;
+    const pid = document.getElementById('productId').value;
+    location.href = `/products/${pid}/del`; // GET http://서버주소 or 서버도메인/products/상품번호/del
+  });
 </script>
 </body>
 </html>

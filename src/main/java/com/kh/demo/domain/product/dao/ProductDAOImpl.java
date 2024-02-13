@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -61,6 +62,22 @@ public class ProductDAOImpl implements ProductDAO{
     }
   }
 
+  //단건삭제
+  @Override
+  public int deleteById(Long productId) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("delete from product ");
+    sql.append(" where product_id = :productId ");
+
+    SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("productId",productId);
+
+    int deletedRowCnt = template.update(sql.toString(), param);
+
+    return deletedRowCnt;
+  }
+
+  //목록
   @Override
   public List<Product> findAll() {
     StringBuffer sql = new StringBuffer();

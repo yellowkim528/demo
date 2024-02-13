@@ -12,6 +12,9 @@ public interface ProductSVC {
   //조회
   Optional<Product> findById(Long productId);
 
+  //삭제
+  int deleteById(Long productId);
+  
   //목록
   List<Product> findAll();  
 }

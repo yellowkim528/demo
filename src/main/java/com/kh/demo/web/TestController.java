@@ -1,17 +1,50 @@
 package com.kh.demo.web;
 
 import com.kh.demo.test.Person;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Controller
-@RequestMapping("/test")          // http://localhost/test
+@RequestMapping("/test")          // http://localhost:9080/test
 public class TestController {
+
+  @GetMapping("/t2")              //Get http://localhost:9080/test/t2
+  public String t2(){
+    return "test/test2";
+  }
+
+  @GetMapping("/product")         // Get http://localhost:9080/test/product
+  public String get(
+          @RequestParam("pname") String pname,
+          @RequestParam("price") Long price){
+    log.info("get()호출됨");
+    log.info("pname={},price={}",pname,price);
+    return "redirect:/test/t2";
+  }
+  @GetMapping("/product/{pname}/{price}")  // Get http://localhost:9080/test/product/상품명/가격
+  public String get2(
+          @PathVariable("pname") String pname,
+          @PathVariable("price") Long price){
+    log.info("get2()호출됨");
+    log.info("pname={},price={}",pname,price);
+    return "redirect:/test/t2";
+  }
+
+  @PostMapping("/product")       // Post http://localhost:9080/test
+  public String post(
+          @RequestParam("pname") String pname,
+          @RequestParam("price") Long price){
+    log.info("post()호출됨");
+    log.info("pname={},price={}",pname,price);
+    return "redirect:/test/t2";
+  }
+
 
   @GetMapping("/t1")              // get http://localhost/test/t1
   public String t1( Model model){
