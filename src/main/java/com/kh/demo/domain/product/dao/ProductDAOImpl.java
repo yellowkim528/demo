@@ -77,6 +77,18 @@ public class ProductDAOImpl implements ProductDAO{
     return deletedRowCnt;
   }
 
+  //여러건 삭제
+  @Override
+  public int deleteByIds(List<Long> productIds) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("delete from product ");
+    sql.append(" where product_id in (:productIds) ");
+
+    Map<String,List<Long>> map = Map.of("productIds",productIds);
+    int deletedRowCnt = template.update(sql.toString(), map);
+    return deletedRowCnt;
+  }
+
   //목록
   @Override
   public List<Product> findAll() {

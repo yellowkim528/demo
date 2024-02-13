@@ -62,7 +62,7 @@ public class ProductController {
     return "product/detailForm";
   }
 
-  //삭제
+  //단건삭제
   @GetMapping("/{pid}/del")
   public String deleteById(@PathVariable("pid") Long productId){
     log.info("deleteById={}",productId);
@@ -73,6 +73,15 @@ public class ProductController {
     return "redirect:/products";     // GET http://localhost:9080/products/
   }
 
+  //여러건삭제
+  @PostMapping("/del")          // POST http://localhost:9080/products/del
+  public String deleteByIds(@RequestParam("pids") List<Long> pids) {
+
+    log.info("deleteByIds={}",pids);
+    int deletedRowCnt = productSVC.deleteByIds(pids);
+
+    return "redirect:/products";    // GET http://localhost:9080/products/
+  }
   
   //목록
   @GetMapping   // GET http://localhost:9080/products

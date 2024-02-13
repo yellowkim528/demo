@@ -19,7 +19,7 @@ public interface ProductDAO {
   int deleteById(Long productId);
 
   //여러건삭제
-  //int deleteByIds(List<Long> productIds);
+  int deleteByIds(List<Long> productIds);
 
   //수정
 }

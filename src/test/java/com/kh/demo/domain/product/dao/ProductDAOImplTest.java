@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ class ProductDAOImplTest {
   }
 
   @Test
-  @DisplayName("상품삭제")
+  @DisplayName("상품단건삭제")
   void deleteById(){
     Long pid = 61L;
     int deletedRowCnt = productDAO.deleteById(pid);
@@ -48,6 +49,19 @@ class ProductDAOImplTest {
     Assertions.assertThat(deletedRowCnt).isEqualTo(1);
   }
 
+  @Test
+  @DisplayName("상품여러건삭제")
+  void deleteByIds() {
+    List<Long> ids = new ArrayList<>();
+//    productDAO.deleteByIds(List.of(1L, 2L, 3L));
+    ids.add(1L);
+    ids.add(2L);
+    ids.add(3L);
+    int deletedRowCnt = productDAO.deleteByIds(ids);
+
+    Assertions.assertThat(deletedRowCnt).isEqualTo(ids.size());
+  }
+  
   @Test
   @DisplayName("상품목록")
   void findAll(){
@@ -57,4 +71,6 @@ class ProductDAOImplTest {
     }
     log.info("size={}",list.size());
   }
+
+
 }
