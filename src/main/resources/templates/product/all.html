@@ -15,25 +15,32 @@
 <body>
 <h3>상품목록</h3>
 
-<div>
-  <table>
-    <thead>
-      <tr>
-        <td>상품번호</td>
-        <td>상품명</td>
-      </tr>
-    </thead>
-    <tbody id="rows">
-      <tr class="row" th:each="product :${list}"  th:data-product-id="${product.productId}">
-        <td th:text="${product.productId}"></td>
-        <!--/*  <td><a th:href="|products/${product.productId}/detail|" th:text="${product.pname}"></a></td> */-->
-        <!--/* <td><a th:href="@{/products/{productId}/detail(productId=${product.productId})}" th:text="${product.pname}"></a></td> */-->
-        <td th:text="${product.pname}"></td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-<div><button id="addBtn">등록</button></div>
+<form id="frm" action="/products/del" method="POST">
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <td>전체선택</td>
+          <td>상품번호</td>
+          <td>상품명</td>
+        </tr>
+      </thead>
+      <tbody id="rows">
+        <tr class="row" th:each="product :${list}"  th:data-product-id="${product.productId}">
+          <td><input type="checkbox" name="pids" th:value="${product.productId}"></td>
+          <td th:text="${product.productId}"></td>
+          <!--/*  <td><a th:href="|products/${product.productId}/detail|" th:text="${product.pname}"></a></td> */-->
+          <!--/* <td><a th:href="@{/products/{productId}/detail(productId=${product.productId})}" th:text="${product.pname}"></a></td> */-->
+          <td th:text="${product.pname}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button type="submit" id="delBtn">삭제</button>
+    <button type="button" id="addBtn">등록</button>
+  </div>
+</form>
 <script>
   const $addBtn = document.getElementById('addBtn');
   $addBtn.addEventListener('click', evt=>{
@@ -42,11 +49,24 @@
 
   const $rows = document.getElementById('rows');
   $rows.addEventListener('click',evt=>{
+    if(evt.target.tagName === 'INPUT' &&  evt.target.getAttribute('type') == 'checkbox') {
+      return;
+    };
     const $row = evt.target.closest('.row');
     const productId = $row.dataset.productId;
     location.href = `/products/${productId}/detail`;    // GET http://localhost:9080/상품번호/detail
   });
 
+  //삭제
+  const frm = document.getElementById('frm');
+  frm.addEventListener('submit', evt=>{
+    evt.preventDefault();  //기본 이벤트(submit) 중지
+    if(!window.confirm('삭제하시겠습니까?')) return;
+    evt.target.submit();
+  });
+
+  //전체선택
+  //모든 체크박스가 체크되어있다면 언체크, 그렇지 않으면 모든 체크박스를 체크
 </script>
 </body>
 </html>
