@@ -97,8 +97,21 @@ public class ProductController {
   }
   //수정 처리
   @PostMapping("/{pid}/edit")
-  public String update(@PathVariable("pid") Long productId,
-                       RedirectAttributes redirectAttributes){
+  public String update(
+          //경로변수 pid로부터 상품번호을 읽어온다
+          @PathVariable("pid") Long productId,
+          //요청메세지 바디로부터 대응되는 상품정보를 읽어온다.
+          @RequestParam("pname") String pname,
+          @RequestParam("quantity") Long quantity,
+          @RequestParam("price") Long price,
+          //리다이렉트시 경로변수에 값을 설정하기위해 사용
+          RedirectAttributes redirectAttributes){
+
+    Product product = new Product();
+    product.setPname(pname);
+    product.setQuantity(quantity);
+    product.setPrice(price);
+    int updateRowCnt = productSVC.updateById(productId, product);
 
     redirectAttributes.addAttribute("pid",productId);
     return "redirect:/products/{pid}/detail";
