@@ -82,6 +82,27 @@ public class ProductController {
 
     return "redirect:/products";    // GET http://localhost:9080/products/
   }
+
+  //수정양식
+  @GetMapping("/{pid}/edit")      // GET http://locahost:9080/products/상품번호/edit
+  public String updateForm(
+          @PathVariable("pid") Long productId,
+          Model model){
+
+    Optional<Product> optionalProduct = productSVC.findById(productId);
+    Product findedProduct = optionalProduct.orElseThrow();
+
+    model.addAttribute("product",findedProduct);
+    return "product/updateForm";
+  }
+  //수정 처리
+  @PostMapping("/{pid}/edit")
+  public String update(@PathVariable("pid") Long productId,
+                       RedirectAttributes redirectAttributes){
+
+    redirectAttributes.addAttribute("pid",productId);
+    return "redirect:/products/{pid}/detail";
+  }
   
   //목록
   @GetMapping   // GET http://localhost:9080/products

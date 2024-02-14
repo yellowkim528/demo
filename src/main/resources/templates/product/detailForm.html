@@ -20,16 +20,27 @@
   </div>
 </form>
 <script>
-  const $modifyBtn = document.getElementById('listBtn');
-  const $deleteBtn = document.getElementById('deleteBtn');
+  const $modifyBtn = document.getElementById('modifyBtn');  //수정버튼
+  const $deleteBtn = document.getElementById('deleteBtn');  //삭제버튼
+  const $listBtn = document.getElementById('listBtn');      //목록버튼
+
+  const pid = document.getElementById('productId').value;   //상품번호
+
+  //수정
   $modifyBtn.addEventListener('click',e=>{
-    location.href = '/products';      // GET http://서버주소 or 서버도메인/products
-  }, false);
+    location.href=`/products/${pid}/edit`; // GET http://서버주소 or 서버도메인/products/상품번호/edit
+  });
+
+  //삭제
   $deleteBtn.addEventListener('click',e=>{
     if(!window.confirm('삭제하시겠습니까')) return;
-    const pid = document.getElementById('productId').value;
     location.href = `/products/${pid}/del`; // GET http://서버주소 or 서버도메인/products/상품번호/del
   });
+
+  //목록
+  $listBtn.addEventListener('click',e=>{
+    location.href = '/products';      // GET http://서버주소 or 서버도메인/products
+  }, false);
 </script>
 </body>
 </html>
