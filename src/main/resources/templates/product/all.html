@@ -20,7 +20,7 @@
     <table>
       <thead>
         <tr>
-          <td>전체선택</td>
+          <td id="selectAll">전체</td>
           <td>상품번호</td>
           <td>상품명</td>
         </tr>
@@ -67,6 +67,17 @@
 
   //전체선택
   //모든 체크박스가 체크되어있다면 언체크, 그렇지 않으면 모든 체크박스를 체크
+  const $selectAll = document.getElementById('selectAll');
+  $selectAll.addEventListener('click',evt=>{
+    //Array.from(iteral) : iteral객체를 배열로 변환
+    const $inputs = Array.from(document.querySelectorAll('#rows input[type=checkbox]'));
+    const isAllChecked = $inputs.every(input=>input.checked == true)
+    if(isAllChecked) {
+      $inputs.forEach(input=>input.checked = false);  // 모든 체크박스를 unchecked로 변경
+    }else{
+      $inputs.forEach(input=>input.checked = true);  // 모든 체크박스를 checked로 변경
+    }
+  });
 </script>
 </body>
 </html>
