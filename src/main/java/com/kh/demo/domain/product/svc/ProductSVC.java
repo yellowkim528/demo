@@ -19,5 +19,8 @@ public interface ProductSVC {
   int deleteByIds(List<Long> productIds);
   
   //목록
-  List<Product> findAll();  
+  List<Product> findAll();
+
+  //수정
+  int updateById(Long productId, Product product);
 }

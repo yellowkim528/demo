@@ -27,7 +27,7 @@
       </thead>
       <tbody id="rows">
         <tr class="row" th:each="product :${list}"  th:data-product-id="${product.productId}">
-          <td><input type="checkbox" name="pids" th:value="${product.productId}"></td>
+          <td class="chk"><input type="checkbox" name="pids" th:value="${product.productId}"></td>
           <td th:text="${product.productId}"></td>
           <!--/*  <td><a th:href="|products/${product.productId}/detail|" th:text="${product.pname}"></a></td> */-->
           <!--/* <td><a th:href="@{/products/{productId}/detail(productId=${product.productId})}" th:text="${product.pname}"></a></td> */-->
@@ -49,9 +49,14 @@
 
   const $rows = document.getElementById('rows');
   $rows.addEventListener('click',evt=>{
+    //1) input요소 이면서 checkbox는 제외
     if(evt.target.tagName === 'INPUT' &&  evt.target.getAttribute('type') == 'checkbox') {
       return;
     };
+    //2) td요소중  checkbox있는 td는 제외
+    if(evt.target.tagName == 'TD' && evt.target.classList.contains('chk')){
+      return;
+    }
     const $row = evt.target.closest('.row');
     const productId = $row.dataset.productId;
     location.href = `/products/${productId}/detail`;    // GET http://localhost:9080/상품번호/detail

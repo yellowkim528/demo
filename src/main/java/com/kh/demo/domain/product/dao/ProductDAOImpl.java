@@ -89,6 +89,30 @@ public class ProductDAOImpl implements ProductDAO{
     return deletedRowCnt;
   }
 
+  //수정
+  @Override
+  public int updateById(Long productId, Product product) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("update product ");
+    sql.append("   set pname = :pname, ");
+    sql.append("       quantity = :quantity, ");
+    sql.append("       price = :price, ");
+    sql.append("       udate = default ");
+    sql.append(" where product_id = :productId ");
+
+    //sql 파라미터 변수에 값 매핑
+    SqlParameterSource param = new MapSqlParameterSource()
+            .addValue("pname", product.getPname())
+            .addValue("quantity", product.getQuantity())
+            .addValue("price", product.getPrice())
+            .addValue("productId", productId);
+    
+    //update수행 후 변경된 행수 반환
+    int updateRowCnt = template.update(sql.toString(), param);
+
+    return updateRowCnt;
+  }
+
   //목록
   @Override
   public List<Product> findAll() {

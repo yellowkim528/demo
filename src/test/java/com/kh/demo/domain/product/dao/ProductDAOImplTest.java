@@ -72,5 +72,27 @@ class ProductDAOImplTest {
     log.info("size={}",list.size());
   }
 
-
+  @Test
+  @DisplayName("상품수정")
+  void updateById() {
+    Long productId = 1230L;
+    Product product = new Product();
+    product.setPname("볼펜");
+    product.setPrice(1L);
+    product.setQuantity(1L);
+    int updatedRowCnt = productDAO.updateById(productId, product);
+//   log.info("updatedRowCnt={}", updatedRowCnt);
+    if(updatedRowCnt == 0) {
+      Assertions.fail("변경 내역이 없습니다.");
+    }
+    Optional<Product> optionalProduct = productDAO.findById(productId);
+    if(optionalProduct.isPresent()){
+      Product findedProduct = optionalProduct.get();
+      Assertions.assertThat(findedProduct.getPname()).isEqualTo("볼펜");
+      Assertions.assertThat(findedProduct.getQuantity()).isEqualTo(1L);
+      Assertions.assertThat(findedProduct.getPrice()).isEqualTo(1L);
+    }else{
+      Assertions.fail("변경할 상품이 없습니다");
+    }
+  }
 }
