@@ -2,6 +2,7 @@ package com.kh.demo.web;
 
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
+import com.kh.demo.web.form.product.AddForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,19 +31,24 @@ public class ProductControllerV2 {
   //상품등록처리
   @PostMapping("/add")        // Post, http://localhost:9080/products/add
   public String add(
-          @RequestParam(value = "pname",required = false) String pname,
-          @RequestParam(value = "quantity",required = false) Long quantity,
-          @RequestParam(value = "price",required = false) Long price,
+          AddForm addForm,    //form객체 : 양식과 매핑되는 객체
           Model model,
           RedirectAttributes redirectAttributes
           ){
 
-    log.info("pname={}, {}, {}", pname,quantity,price);
+    log.info("addForm={}", addForm);
+    //유효성체크
+    if(addForm.getPname().length() > 10){
+
+      model.addAttribute("s_err_pname","상품명은 10자 이내여야합니다.");
+      return "productv2/add";
+    }
+
     //상품등록
     Product product = new Product();
-    product.setPname(pname);
-    product.setQuantity(quantity);
-    product.setPrice(price);
+    product.setPname(addForm.getPname());
+    product.setQuantity(addForm.getQuantity());
+    product.setPrice(addForm.getPrice());
 
     Long productId = productSVC.save(product);
     log.info("상품번호={}", productId);

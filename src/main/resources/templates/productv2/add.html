@@ -24,22 +24,21 @@
 </head>
 <body>
   <h3>상품등록</h3>
-  <form action="/products/add" method="post">
+  <form id='frm' action="/products/add" method="post">
+    <div><span class="err-msg" id="errGlobal"></span></div>
     <div>
       <label for="pname">상품명</label>
-      <input id="pname" name="pname" type="text" placeholder="영문/숫자/한글/_-가능" minlength="3" maxlength="10"
-             pattern="[a-zA-Z0-9ㄱ-ㅎ가-힣_\-]{3,10}" title="영문/숫자/한글/_-가능, 3~10자리" required>
+      <input id="pname" name="pname" type="text" placeholder="영문/숫자/한글/_-가능">
       <span class="err-msg" id="errPname">11</span>
+      <span class="err-msg" th:text="${s_err_pname}"></span>
     </div>
     <div>
       <label for="quantity">수량</label>
-      <input id="quantity" name="quantity" type="text" placeholder="숫자0~9사이 입력가능 1~10자리" minlength="1" maxlength="10"
-             pattern="[0-9]{1,10}" title="숫자0~9사이 입력가능 1~10자리" required>
+      <input id="quantity" name="quantity" type="text" placeholder="숫자0~9사이 입력가능 1~10자리">
       <span class="err-msg" id="errQuantity">22</span>
     </div>
     <div><label for="price">가격</label>
-      <input id="price" name="price" type="text" placeholder="숫자0~9사이 입력가능 1~10자리" minlength="1" maxlength="10"
-             pattern="[0-9]{1,10}" title="숫자0~9사이 입력가능 1~10자리" required>
+      <input id="price" name="price" type="text" placeholder="숫자0~9사이 입력가능 1~10자리">
       <span class="err-msg" id="errPrice">33</span>
     </div>
     <div>
@@ -49,7 +48,7 @@
     </div>
   </form>
   <script>
-
+/*
     //1) 필드 레벨의 유효성 체크
     pname.addEventListener('focus',evt=>{
       evt.target.style.backgroundColor = 'yellow';
@@ -100,6 +99,29 @@
         evt.target.select();
       }
     });
+
+    frm.addEventListener('submit',evt=>{
+      //1)submit이벤트 중지
+      evt.preventDefault();
+      //2)글로벌 오류 체크
+      //상품*수량 > 1000만원 초과유무
+       if(parseInt(quantity.value) * parseInt(price.value) > 10000000){
+          console.log('총액 1000만원 초과');
+          //오류메세지 표시
+          errGlobal.classList.add('on');
+          errGlobal.textContent = '총액 1000만원 초과합니다';
+          return;
+       }else{
+          //오류메시지 클리어
+          errGlobal.classList.remove('on');
+          errGlobal.textContent = '';
+          console.log('총액 1000만원 이하');
+       }
+
+      //3)이상 없을시 submit
+      evt.target.submit();
+    });
+*/
   </script>
 </body>
 </html>
