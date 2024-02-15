@@ -3,6 +3,7 @@ package com.kh.demo.web;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -11,19 +12,19 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-//@Controller // Controller 역할을 하는 클래스
+@Controller // Controller 역할을 하는 클래스
 @RequestMapping("/products")    // http://localhost:9080/products
-public class ProductController {
+public class ProductControllerV2 {
 
   private ProductSVC productSVC;
-  ProductController(ProductSVC productSVC){
+  ProductControllerV2(ProductSVC productSVC){
     this.productSVC = productSVC;
   }
 
   //상품등록양식
   @GetMapping("/add")         // Get, http://localhost:9080/products/add
   public String addForm() {
-    return "product/add";     // view이름  상품등록화면
+    return "productv2/add";     // view이름  상품등록화면
   }
 
   //상품등록처리
@@ -58,7 +59,7 @@ public class ProductController {
     Product product = findedProduct.orElseThrow();
     model.addAttribute("product", product);
 
-    return "product/detailForm";
+    return "productv2/detailForm";
   }
 
   //단건삭제
@@ -92,7 +93,7 @@ public class ProductController {
     Product findedProduct = optionalProduct.orElseThrow();
 
     model.addAttribute("product",findedProduct);
-    return "product/updateForm";
+    return "productv2/updateForm";
   }
   //수정 처리
   @PostMapping("/{pid}/edit")
@@ -123,6 +124,6 @@ public class ProductController {
     List<Product> list = productSVC.findAll();
     model.addAttribute("list", list);
 
-    return "product/all";
+    return "productv2/all";
   }
 }

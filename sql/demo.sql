@@ -25,6 +25,10 @@ create sequence product_product_id_seq;
 alter table product modify cdate default systimestamp; --운영체제 일시를 기본값으로
 alter table product modify udate default systimestamp; --운영체제 일시를 기본값으로
 
+--필수 not null
+alter table product modify quantity not null;
+alter table product modify price not null;
+
 --생성--
 insert into product(product_id,pname,quantity,price)
      values(product_product_id_seq.nextval, '컴퓨터', 5, 1000000);
