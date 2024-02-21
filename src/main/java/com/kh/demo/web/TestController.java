@@ -21,16 +21,16 @@ public class TestController {
 
   @GetMapping("/product")         // Get http://localhost:9080/test/product
   public String get(
-          @RequestParam("pname") String pname,
-          @RequestParam("price") Long price){
+      @RequestParam("pname") String pname,
+      @RequestParam("price") Long price){
     log.info("get()호출됨");
     log.info("pname={},price={}",pname,price);
     return "redirect:/test/t2";
   }
   @GetMapping("/product/{pname}/{price}")  // Get http://localhost:9080/test/product/상품명/가격
   public String get2(
-          @PathVariable("pname") String pname,
-          @PathVariable("price") Long price){
+      @PathVariable("pname") String pname,
+      @PathVariable("price") Long price){
     log.info("get2()호출됨");
     log.info("pname={},price={}",pname,price);
     return "redirect:/test/t2";
@@ -38,8 +38,8 @@ public class TestController {
 
   @PostMapping("/product")       // Post http://localhost:9080/test
   public String post(
-          @RequestParam("pname") String pname,
-          @RequestParam("price") Long price){
+      @RequestParam("pname") String pname,
+      @RequestParam("price") Long price){
     log.info("post()호출됨");
     log.info("pname={},price={}",pname,price);
     return "redirect:/test/t2";
@@ -64,5 +64,11 @@ public class TestController {
 
     model.addAttribute("persons",persons);
     return "test/test1";
+  }
+
+  @GetMapping("/url/t1")        //GET http:/localhost:9080/test/url/t1
+  public String url_t1(){
+
+    return "test/url";
   }
 }

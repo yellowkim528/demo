@@ -1,0 +1,16 @@
+1. view
+2. 이벤트 프로그래밍
+3. 서버 프로그래밍
+4. 양식
+5. http프로토콜 규약(요청메세지, 응답메세지 구조)
+6. DB 설계
+7. WAS와 DB 연동
+8. 단위테스트(junit, postman)
+9. 동적인화면(clien-domapi, server-thymeleaf)
+10. 화면전환
+11. crud
+12. 국제화
+==========
+인증, 인가, 로그아웃
+REST API, client-server통신 => 댓글작성
+교환표준포맷(json, xml)

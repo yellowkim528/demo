@@ -3,6 +3,7 @@ package com.kh.demo.web;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import com.kh.demo.web.form.product.AddForm;
+import com.kh.demo.web.form.product.UpdateForm;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Controller // Controller 역할을 하는 클래스
@@ -24,23 +26,47 @@ public class ProductControllerV2 {
 
   //상품등록양식
   @GetMapping("/add")         // Get, http://localhost:9080/products/add
-  public String addForm() {
+  public String addForm(Model model) {
+    model.addAttribute("addForm", new AddForm());
     return "productv2/add";     // view이름  상품등록화면
   }
 
   //상품등록처리
   @PostMapping("/add")        // Post, http://localhost:9080/products/add
   public String add(
-          AddForm addForm,    //form객체 : 양식과 매핑되는 객체
-          Model model,
-          RedirectAttributes redirectAttributes
-          ){
+      AddForm addForm,    //form객체 : 양식과 매핑되는 객체
+      Model model,
+      RedirectAttributes redirectAttributes
+  ){
 
     log.info("addForm={}", addForm);
     //유효성체크
-    if(addForm.getPname().length() > 10){
-
-      model.addAttribute("s_err_pname","상품명은 10자 이내여야합니다.");
+    //필드 레벨
+    //1-1)상품명
+    String pattern = "^[a-zA-Z0-9가-힣_-]{3,10}$";
+    if (!Pattern.matches(pattern, addForm.getPname())) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_pname","영문/숫자/한글/_-가능, 3~10자리");
+      return "productv2/add";
+    }
+    //1-2)수량
+    pattern = "^\\d{1,10}$";
+    if (!Pattern.matches(pattern, String.valueOf(addForm.getQuantity()))) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_quantity","숫자0~9사이 입력가능 1~10자리");
+      return "productv2/add";
+    }
+    //1-3)가격
+    pattern = "^\\d{1,10}$";
+    if (!Pattern.matches(pattern, String.valueOf(addForm.getPrice()))) {
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_price","숫자0~9사이 입력가능 1~10자리");
+      return "productv2/add";
+    }
+    //글로벌 레벨
+    if(addForm.getQuantity() * addForm.getPrice() > 10_000_000){
+      model.addAttribute("addForm", addForm);
+      model.addAttribute("s_err_global","총액 1000만원 초과합니다");
       return "productv2/add";
     }
 
@@ -75,7 +101,7 @@ public class ProductControllerV2 {
 
     //1)상품 삭제 -> 상품테이블에서 삭제
     int deletedRowCnt = productSVC.deleteById(productId);
-    
+
     return "redirect:/products";     // GET http://localhost:9080/products/
   }
 
@@ -92,8 +118,8 @@ public class ProductControllerV2 {
   //수정양식
   @GetMapping("/{pid}/edit")      // GET http://locahost:9080/products/상품번호/edit
   public String updateForm(
-          @PathVariable("pid") Long productId,
-          Model model){
+      @PathVariable("pid") Long productId,
+      Model model){
 
     Optional<Product> optionalProduct = productSVC.findById(productId);
     Product findedProduct = optionalProduct.orElseThrow();
@@ -104,25 +130,55 @@ public class ProductControllerV2 {
   //수정 처리
   @PostMapping("/{pid}/edit")
   public String update(
-          //경로변수 pid로부터 상품번호을 읽어온다
-          @PathVariable("pid") Long productId,
-          //요청메세지 바디로부터 대응되는 상품정보를 읽어온다.
-          @RequestParam("pname") String pname,
-          @RequestParam("quantity") Long quantity,
-          @RequestParam("price") Long price,
-          //리다이렉트시 경로변수에 값을 설정하기위해 사용
-          RedirectAttributes redirectAttributes){
+      //경로변수 pid로부터 상품번호을 읽어온다
+      @PathVariable("pid") Long productId,
+      //요청메세지 바디로부터 대응되는 상품정보를 읽어온다.
+      UpdateForm updateForm,
+      //리다이렉트시 경로변수에 값을 설정하기위해 사용
+      RedirectAttributes redirectAttributes,
+      Model model){
 
+    //유효성체크
+    //필드 레벨
+    //1-1)상품명
+    String pattern = "^[a-zA-Z0-9가-힣_-]{3,10}$";
+    if (!Pattern.matches(pattern, updateForm.getPname())) {
+      model.addAttribute("product", updateForm);
+      model.addAttribute("s_err_pname","영문/숫자/한글/_-가능, 3~10자리");
+      return "productv2/updateForm";
+    }
+    //1-2)수량
+    pattern = "^\\d{1,10}$";
+    if (!Pattern.matches(pattern, String.valueOf(updateForm.getQuantity()))) {
+      model.addAttribute("product", updateForm);
+      model.addAttribute("s_err_quantity","숫자0~9사이 입력가능 1~10자리");
+      return "productv2/updateForm";
+    }
+    //1-3)가격
+    pattern = "^\\d{1,10}$";
+    if (!Pattern.matches(pattern, String.valueOf(updateForm.getPrice()))) {
+      model.addAttribute("product", updateForm);
+      model.addAttribute("s_err_price","숫자0~9사이 입력가능 1~10자리");
+      return "productv2/updateForm";
+    }
+    //글로벌 레벨
+    if(updateForm.getQuantity() * updateForm.getPrice() > 10_000_000){
+      model.addAttribute("product", updateForm);
+      model.addAttribute("s_err_global","총액 1000만원 초과합니다");
+      return "productv2/updateForm";
+    }
+
+    //정상처리
     Product product = new Product();
-    product.setPname(pname);
-    product.setQuantity(quantity);
-    product.setPrice(price);
+    product.setPname(updateForm.getPname());
+    product.setQuantity(updateForm.getQuantity());
+    product.setPrice(updateForm.getPrice());
     int updateRowCnt = productSVC.updateById(productId, product);
 
     redirectAttributes.addAttribute("pid",productId);
     return "redirect:/products/{pid}/detail";
   }
-  
+
   //목록
   @GetMapping   // GET http://localhost:9080/products
   public String findAll(Model model){
