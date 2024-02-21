@@ -33,12 +33,13 @@ public class PubdataController {
 
   @ResponseBody
   @GetMapping("/news/search")
-  public String newsSearch(
-      @RequestParam("keyword") String keyword
-  ) {
-    log.info("keyword={}", keyword);
-    String data = naverNews.reqNews(keyword);
-
+  public String search(
+      @RequestParam("keyword") String keyword,
+      @RequestParam("start") int start,
+      @RequestParam("display") int display
+  ){
+    log.info("keyword={}",keyword);
+    String data = naverNews.reqNews(keyword,start,display);
     return data;
   }
 

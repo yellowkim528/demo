@@ -12,6 +12,9 @@ public class NaverNews {
 
   private final WebClient webClient;
   private String baseUrl = "https://openapi.naver.com";
+  //개인 id정보로 수정!!
+  private final String Client_Id = "rU1BGqPDYCKpVAtW30FM";
+  private final String Client_Secret = "cOAsPt0pi2";
 
   @Autowired
   public NaverNews(WebClient.Builder webClientBilder){
@@ -22,17 +25,14 @@ public class NaverNews {
     this.webClient = webClientBilder
 //            .uriBuilderFactory(factory)
         .baseUrl(baseUrl)
-//        .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE) //json포맷요청
+//            .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE) //json포맷요청
         .build();
   }
 
-  public String reqNews(String keyword){
-    final String query = keyword;     //"LG화학";
-    final int display = 10;
-    final int start = 1;
-    // 개인 id정보로 수정!
-    final String Client_id = "kNHfVYrKhJBYQWrztHzB";
-    final String Client_Secret = "61BZEQwZNS";
+  public String reqNews(String keyword,int start, int display){
+    final String query = keyword; //"LG화학";
+    //   final int display = 10;
+//    final int start = 1;
 
     // http get 요청하면 http 응답메시지 수신
     Mono<String> response = webClient.get()
@@ -43,7 +43,7 @@ public class NaverNews {
             .queryParam("start",start)          //start
 //              .queryParam("sort","")                       //sort
             .build())
-        .header("X-Naver-Client-Id",Client_id)
+        .header("X-Naver-Client-Id",Client_Id)
         .header("X-Naver-Client-Secret",Client_Secret)
         .retrieve()
         .bodyToMono(String.class);
