@@ -16,7 +16,7 @@ public class StockPrice {
   private final String resultType = "json";
 
 
-  private final String endBasDt = "20240221";
+
 
   @Autowired
   public StockPrice(WebClient.Builder webClientBilder){
@@ -31,9 +31,10 @@ public class StockPrice {
         .build();
   }
 
-  public String reqStockPrice(String keyword, String startDate){
+  public String reqStockPrice(String keyword, String startDate, String endDate){
     final String itmsNm = keyword;
     final String beginBasDt = startDate;
+    final String endBasDt = endDate;
 
     // http get 요청하면 http 응답메시지 수신
     Mono<String> response = webClient.get()

@@ -13,15 +13,15 @@
 <body>
 <h3>주식검색</h3>
 <div>
-<form action="/pubdata/news/search" method="GET">
+<form action="/pubdata/stock/find" method="GET">
   <label for="search">검색어</label>
   <input id="search" type="text" name="keyword">
   <button class="btn btn-dark" id="searchBtn" type="button">검색</button>
   <label for="startDate">시작일
-    <input id="startDate" type="date">
+    <input id="startDate" type="date" name="startDate">
   </label>
-  <label for="endDate">
-
+  <label for="endDate">종료일
+    <input id="endDate" type="date" name="endDate">
   </label>
 </form>
 </div>
@@ -44,6 +44,8 @@
 <script>
   const $search = document.getElementById('search');
   const $searchBtn = document.getElementById('searchBtn');
+  const $startDate = document.querySelector('#startDate');
+  const $endDate = document.querySelector('#endDate');
 
   
   $searchBtn.addEventListener('click', callStockApi);
@@ -56,8 +58,9 @@
   
   function callStockApi(evt){
     const keyword = search.value;
-    const startDate = document.querySelector('#startDate').value;
-    const url= `/pubdata/stock/find?keyword=${keyword}&startDate=${startDate}`;
+    const startDate = $startDate.value;
+    const endDate = $endDate.value;
+    const url= `/pubdata/stock/find?keyword=${keyword}&startDate=${startDate}&endDate=${endDate}`;
     const option = {
       method : 'GET',
       headers : {
@@ -83,10 +86,10 @@
 
   function makeHtml(res){
     const result = Object.values(res.response.body.items);
-    result.forEach(items =>{
-      items.forEach(item =>{
-      });
-    });
+    // result.forEach(items =>{
+    //   items.forEach(item =>{
+    //   });
+    // });
 
     // 콘솔창 띄워서 확인
     // res.items.forEach(stock => console.log(stock.itmsNm, stock.basDt, stock.clpr));
