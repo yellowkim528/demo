@@ -50,18 +50,18 @@ public class PubdataController {
   @ResponseBody
   @GetMapping("/stock/find")
   public String stockFind(
-      @RequestParam("keyword") String keyword,
-      @RequestParam("startDate") String startDate,
-      @RequestParam("endDate") String endDate
+      @RequestParam("itmsNm") String itmsNm,
+      @RequestParam("beginBasDt") String beginBasDt,
+      @RequestParam("endBasDt") String endBasDt
   ) {
-    log.info("keyword={}", keyword);
-    log.info("startDate={}", startDate);
-    log.info("endDate={}", endDate);
+    log.info("itmsNm={}", itmsNm);
+    log.info("beginBasDt={}", beginBasDt);
+    log.info("endBasDt={}", endBasDt);
 
-    startDate = startDate.replace("-","");
-    endDate = endDate.replace("-","");
+    beginBasDt = beginBasDt.replace("-","");
+    endBasDt = endBasDt.replace("-","");
 
-    String data = stockPrice.reqStockPrice(keyword, startDate, endDate);
+    String data = stockPrice.reqStockPrice(itmsNm, beginBasDt, endBasDt);
     return data;
   }
 

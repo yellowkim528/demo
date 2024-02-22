@@ -31,10 +31,10 @@ public class StockPrice {
         .build();
   }
 
-  public String reqStockPrice(String keyword, String startDate, String endDate){
-    final String itmsNm = keyword;
-    final String beginBasDt = startDate;
-    final String endBasDt = endDate;
+  public String reqStockPrice(String itmsNm, String beginBasDt, String endBasDt){
+    final String box1 = itmsNm;
+    final String box2 = beginBasDt;
+    final String box3 = endBasDt;
 
     // http get 요청하면 http 응답메시지 수신
     Mono<String> response = webClient.get()
@@ -44,9 +44,9 @@ public class StockPrice {
             .queryParam("numOfRows",numOfRows)
             .queryParam("pageNo",pageNo)
             .queryParam("resultType",resultType)
-            .queryParam("itmsNm",itmsNm)
-            .queryParam("beginBasDt",beginBasDt)
-            .queryParam("endBasDt",endBasDt)
+            .queryParam("itmsNm",box1)
+            .queryParam("beginBasDt",box2)
+            .queryParam("endBasDt",box3)
 //              .queryParam("sort","")                       //sort
             .build())
 //        .header("resultCode","00")
