@@ -32,3 +32,12 @@ tr:nth-child(even) {
 tr:hover {
   background-color: #ddd;
 }
+.right{
+  text-align: right;
+}
+.left{
+  text-align: left;
+}
+#pagination{
+  justify-content: center;
+}

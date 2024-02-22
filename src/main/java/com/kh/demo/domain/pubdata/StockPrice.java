@@ -11,8 +11,6 @@ public class StockPrice {
   private final WebClient webClient;
   private String baseUrl = "https://apis.data.go.kr";
   private final String serviceKey = "2s8gpTy4cAHLFmocDZh70QO94wQfxdEZMkauGakoluXCgPneCoqhFKJ7KqYE3FChzBbnNQrmtkZXPsJn8QQiGQ==";
-  private final String numOfRows = "20";
-  private final String pageNo = "1";
   private final String resultType = "json";
 
 
@@ -31,10 +29,7 @@ public class StockPrice {
         .build();
   }
 
-  public String reqStockPrice(String itmsNm, String beginBasDt, String endBasDt){
-    final String box1 = itmsNm;
-    final String box2 = beginBasDt;
-    final String box3 = endBasDt;
+  public String reqStockPrice(String itmsNm, String beginBasDt, String endBasDt, int numOfRows, int pageNo){
 
     // http get 요청하면 http 응답메시지 수신
     Mono<String> response = webClient.get()
@@ -44,9 +39,9 @@ public class StockPrice {
             .queryParam("numOfRows",numOfRows)
             .queryParam("pageNo",pageNo)
             .queryParam("resultType",resultType)
-            .queryParam("itmsNm",box1)
-            .queryParam("beginBasDt",box2)
-            .queryParam("endBasDt",box3)
+            .queryParam("itmsNm",itmsNm)
+            .queryParam("beginBasDt",beginBasDt)
+            .queryParam("endBasDt",endBasDt)
 //              .queryParam("sort","")                       //sort
             .build())
 //        .header("resultCode","00")

@@ -52,16 +52,18 @@ public class PubdataController {
   public String stockFind(
       @RequestParam("itmsNm") String itmsNm,
       @RequestParam("beginBasDt") String beginBasDt,
-      @RequestParam("endBasDt") String endBasDt
+      @RequestParam("endBasDt") String endBasDt,
+      @RequestParam("numOfRows") int numOfRows,
+      @RequestParam("pageNo") int pageNo
   ) {
-    log.info("itmsNm={}", itmsNm);
-    log.info("beginBasDt={}", beginBasDt);
-    log.info("endBasDt={}", endBasDt);
+//    log.info("itmsNm={}", itmsNm);
+//    log.info("beginBasDt={}", beginBasDt);
+//    log.info("endBasDt={}", endBasDt);
 
     beginBasDt = beginBasDt.replace("-","");
     endBasDt = endBasDt.replace("-","");
 
-    String data = stockPrice.reqStockPrice(itmsNm, beginBasDt, endBasDt);
+    String data = stockPrice.reqStockPrice(itmsNm, beginBasDt, endBasDt, numOfRows, pageNo);
     return data;
   }
 

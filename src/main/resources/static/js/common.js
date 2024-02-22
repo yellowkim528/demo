@@ -72,7 +72,7 @@ class Pagination {
       document.getElementById(`page${i}`).addEventListener('click', evt => {
         this.setCurrentPage(i);
         //요청페이지 처리
-        callback(i);
+        callback();
         this.displayPagination(callback);
       });
     }
