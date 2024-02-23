@@ -47,4 +47,9 @@ public class ProductSVCImpl implements ProductSVC{
   public List<Product> findAll() {
     return productDAO.findAll();
   }
+
+  @Override
+  public int totalCnt() {
+    return productDAO.totalCnt();
+  }
 }

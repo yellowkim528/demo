@@ -23,4 +23,7 @@ public interface ProductSVC {
 
   //수정
   int updateById(Long productId, Product product);
+
+  //총 레코드 건수
+  int totalCnt();
 }

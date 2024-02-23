@@ -3,20 +3,18 @@ package com.kh.demo.web;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import com.kh.demo.web.api.ApiResponse;
-import com.kh.demo.web.req.ReqSave;
-import com.kh.demo.web.req.ResFindById;
-import com.kh.demo.web.req.ResSave;
+import com.kh.demo.web.req.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@Controller
+//@Controller
+@RestController   //@Controller + @ResponseBody
 @RequiredArgsConstructor
 @RequestMapping("/api/products")
 public class ApiProductController {
@@ -24,18 +22,25 @@ public class ApiProductController {
   private final ProductSVC productSVC;
 
   // 목록
-  @ResponseBody
+//  @ResponseBody   // @RestController로 퉁치기.
   @GetMapping
   public ApiResponse<?> list() {
     List<Product> list = productSVC.findAll();
-    ApiResponse<List<Product>> res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), list);
-    res.setTotalCnt(list.size());
+
+    ApiResponse<List<Product>> res = null;
+    if (list.size() > 0) {
+      res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), list);
+      res.setTotalCnt(productSVC.totalCnt());
+    } else {
+      res = ApiResponse.createApiResponseDetail(
+          ResCode.OK.getCode(), ResCode.OK.name(), "등록된 상품이 1건도 없습니다.",list);
+    }
     return res;
   }
 
 
   // 조회
-  @ResponseBody
+//  @ResponseBody
   @GetMapping("/{pid}")
   public ApiResponse<?> findById(
       @PathVariable("pid") Long productId) {
@@ -65,7 +70,7 @@ public class ApiProductController {
 
 
   // 등록
-  @ResponseBody
+//  @ResponseBody
   @PostMapping      // GET http://localhost:9080/api/products
   public ApiResponse<?> add(
       // @RequestBody : 요청메세지 바디의 json  포맷 문자열 => 자바객체로 변경
@@ -96,18 +101,47 @@ public class ApiProductController {
 
 
   //수정
-  @ResponseBody
+//  @ResponseBody
   @PatchMapping("/{pid}")
-  public void update(){
+  public ApiResponse<?> update(
+      @PathVariable("pid") Long pid,
+      @RequestBody ReqUpdate reqUpdate
+      ) {
+    log.info("pid={}", pid);
+    log.info("reqUpdate={}", reqUpdate);
+    //1)유효성체크
 
+    //2)수정
+    Product product = new Product();
+    BeanUtils.copyProperties(reqUpdate, product);
+
+    int updatedCnt = productSVC.updateById(pid, product);
+    ApiResponse<ResUpdate> res = null;
+    if(updatedCnt == 1){
+      ResUpdate resUpdate = new ResUpdate();
+      BeanUtils.copyProperties(reqUpdate, resUpdate);
+      // reqUpate에는 없고 resUpdate에는 있는 productId 따로 설정
+      resUpdate.setProductId(pid);
+      res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), resUpdate);
+    } else {
+      res = ApiResponse.createApiResponse(ResCode.fail.getCode(), ResCode.fail.name(), null);
+    }
+    return res;
   }
 
   //삭제
-  @ResponseBody
+//  @ResponseBody
   @DeleteMapping("/{pid}")
-  public void delete(){
+  public ApiResponse<?> delete(@PathVariable("pid") Long pid) {
 
+    int deleteCnt = productSVC.deleteById(pid);
+    ApiResponse res = null;
+    if (deleteCnt == 1) {
+      res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), null);
+    } else {
+      res = ApiResponse.createApiResponse(ResCode.fail.getCode(), ResCode.fail.name(),null);
+    }
+    return res;
   }
-
 }
 

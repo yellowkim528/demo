@@ -18,7 +18,7 @@ class ProductDAOImplTest {
 
   @Autowired  // springboot 컨테이너의 객체를 주입 받는다.
   ProductDAO productDAO;
-  
+
   @Test
   @DisplayName("상품등록")
   void save() {
@@ -28,7 +28,7 @@ class ProductDAOImplTest {
     product.setPrice(2_000_000L);
 
     Long productId = productDAO.save(product);
-    log.info("productId={}{}", productId,"2");
+    log.info("productId={}{}", productId, "2");
   }
 
   @Test
@@ -42,7 +42,7 @@ class ProductDAOImplTest {
 
   @Test
   @DisplayName("상품단건삭제")
-  void deleteById(){
+  void deleteById() {
     Long pid = 61L;
     int deletedRowCnt = productDAO.deleteById(pid);
 //    log.info("삭제건수={}",deletedRowCnt);
@@ -61,15 +61,15 @@ class ProductDAOImplTest {
 
     Assertions.assertThat(deletedRowCnt).isEqualTo(ids.size());
   }
-  
+
   @Test
   @DisplayName("상품목록")
-  void findAll(){
+  void findAll() {
     List<Product> list = productDAO.findAll();
     for (Product product : list) {
-      log.info("product={}",product);
+      log.info("product={}", product);
     }
-    log.info("size={}",list.size());
+    log.info("size={}", list.size());
   }
 
   @Test
@@ -82,17 +82,28 @@ class ProductDAOImplTest {
     product.setQuantity(1L);
     int updatedRowCnt = productDAO.updateById(productId, product);
 //   log.info("updatedRowCnt={}", updatedRowCnt);
-    if(updatedRowCnt == 0) {
+    if (updatedRowCnt == 0) {
       Assertions.fail("변경 내역이 없습니다.");
     }
     Optional<Product> optionalProduct = productDAO.findById(productId);
-    if(optionalProduct.isPresent()){
+    if (optionalProduct.isPresent()) {
       Product findedProduct = optionalProduct.get();
       Assertions.assertThat(findedProduct.getPname()).isEqualTo("볼펜");
       Assertions.assertThat(findedProduct.getQuantity()).isEqualTo(1L);
       Assertions.assertThat(findedProduct.getPrice()).isEqualTo(1L);
-    }else{
+    } else {
       Assertions.fail("변경할 상품이 없습니다");
     }
+  }
+
+  @Test
+  @DisplayName("총레코드건수")
+  void totalCnt() {
+    int totalCnt = productDAO.totalCnt();
+    List<Product> list = productDAO.findAll();
+
+    Assertions.assertThat(totalCnt).isEqualTo(list.size());
+
+
   }
 }
