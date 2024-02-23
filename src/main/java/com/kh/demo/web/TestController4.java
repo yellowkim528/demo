@@ -18,62 +18,75 @@ class Person{
   int age;
 }
 
+@AllArgsConstructor
+@Getter
+class Test<T>{
+  T data;
+}
+
 @Slf4j
 @Controller
-@RequestMapping("api/test")
+@RequestMapping("/api/test")
 public class TestController4 {
 
   @ResponseBody
   @GetMapping("/t1")
-  public String t1() {
+  public String t1(){
     return "hi";
   }
 
-
   @ResponseBody
   @GetMapping("/t2")
-  public String t2() {
-    return "{\"name\":\"홍길동\",\"age\":\"20\"}";
+  public String t2(){
+    return "{ \"name\":\"홍길동\", \"age\":\"20\" }";
   }
-
 
   @ResponseBody
   @GetMapping("/t3")
-  public Person t3() {
-    Person p1 = new Person("홍길동", 20);
+  public Person t3(){
+    Person p1 = new Person("홍길순",30);
     return p1;
   }
 
   @ResponseBody
   @GetMapping("/t4/map")
-  public Map<String,Person> map() {
-    Map<String, Person> map = new HashMap<>();
-     map.put("1", new Person("홍길동", 20));
-     map.put("2", new Person("홍길남", 30));
-     map.put("3", new Person("홍길서", 40));
+  public Map<String,Person> map(){
+    Map<String,Person> map = new HashMap<>();
+    map.put("1", new Person("홍길동",10));
+    map.put("2", new Person("홍길서",20));
+    map.put("3", new Person("홍길남",30));
     return map;
   }
-
   @ResponseBody
   @GetMapping("/t4/set")
-  public Set<Person> set() {
+  public Set<Person> set(){
     Set<Person> set = new HashSet<>();
-
-    set.add(new Person("홍길동", 20));
-    set.add(new Person("홍길남", 30));
-    set.add(new Person("홍길서", 40));
+    set.add(new Person("홍길동",10));
+    set.add(new Person("홍길서",20));
+    set.add(new Person("홍길남",30));
     return set;
   }
-
   @ResponseBody
   @GetMapping("/t4/list")
-  public List<Person> list() {
+  public List<Person> list(){
     List<Person> list = new ArrayList<>();
-    list.add(new Person("홍길동", 20));
-    list.add(new Person("홍길남", 30));
-    list.add(new Person("홍길서", 40));
+    list.add(new Person("홍길동",10));
+    list.add(new Person("홍길서",20));
+    list.add(new Person("홍길남",30));
     return list;
   }
 
+  @ResponseBody
+  @GetMapping("/t4/list2")
+  public Test<List<Person>> list2(){
 
+    List<Person> list = new ArrayList<>();
+    list.add(new Person("홍길동",10));
+    list.add(new Person("홍길서",20));
+    list.add(new Person("홍길남",30));
+
+    Test<List<Person>> test = new Test<>(list);
+
+    return test;
+  }
 }

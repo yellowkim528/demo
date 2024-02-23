@@ -1,0 +1,13 @@
+플레이스홀더 : placeholder
+{
+  header:{
+    rtcd:
+    rtmsg:
+  }
+  body:
+  totalCnt:
+  recCnt:
+  reqPage:
+}
+00:성공
+01:

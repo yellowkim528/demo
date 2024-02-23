@@ -5,12 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>주식 검색</title>
   <!-- bootstrap css -->
-  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous"> -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
   <link rel="stylesheet" href="/css/stock/stock.css">
 </head>
 <style>
-
+  #pagination {
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+}
 </style>
 <body>
 <h3>주식검색</h3>
@@ -30,7 +34,7 @@
 <div>
   <p>검색결과</p>
 <!--  제목, 뉴스링크, 요약정보, 작성일 -->
-<table>
+<table class="table table-dark table-borderless">
   <thead>
     <tr>
       <th>기준일자</th>
@@ -133,21 +137,21 @@
     res.response.body.items.item.forEach(item => {
       console.log(item);
       html += `<tr>
-          <td>${item.basDt}</td>
-          <td>${addCommas(item.mkp)}</td>
-          <td>${addCommas(item.lopr)}</td>
-          <td>${addCommas(item.hipr)}</td>
-          <td>${addCommas(item.clpr)}</td> 
-          <td class="right">${addCommas(item.vs)}</td>
-          <td class="right">${item.fltRt}</td>
-          <td>${addCommas(item.trPrc)}</td>
-          <td>${addCommas(item.trqu)}</td>
-          <td class="left">${item.itmsNm}</td>
-          <td class="left">${item.mrktCtg}</td>
-          <td>${item.isinCd}</td>
-          <td>${item.srtnCd}</td>
-          <td>${addCommas(item.lstgStCnt)}</td>
-          <td>${addCommas(item.mrktTotAmt)}</td>
+          <td class="cell str">${item.basDt}</td>
+          <td class="cell num">${addCommas(item.mkp)}</td>
+          <td class="cell num">${addCommas(item.lopr)}</td>
+          <td class="cell num">${addCommas(item.hipr)}</td>
+          <td class="cell num">${addCommas(item.clpr)}</td> 
+          <td class="cell num">${addCommas(item.vs)}</td>
+          <td class="cell num">${item.fltRt}</td>
+          <td class="cell num">${addCommas(item.trPrc)}</td>
+          <td class="cell num">${addCommas(item.trqu)}</td>
+          <td class="cell str">${item.itmsNm}</td>
+          <td class="cell str">${item.mrktCtg}</td>
+          <td class="cell str">${item.isinCd}</td>
+          <td class="cell str">${item.srtnCd}</td>
+          <td class="cell num">${addCommas(item.lstgStCnt)}</td>
+          <td class="cell num">${addCommas(item.mrktTotAmt)}</td>
         </tr>`
       });
   

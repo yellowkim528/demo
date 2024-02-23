@@ -35,15 +35,20 @@ public class ProductDAOImpl implements ProductDAO{
 
     // SQL파라미터 자동매핑
     SqlParameterSource param = new BeanPropertySqlParameterSource(product);
+    // 자동 생성되는(sequence) product_Id값을 찾는 방법임
+    // KeyHolder는 자동 생성된 키를 유지하고 이를 검색할 수 있는 메커니즘을 제공합니다.
+    // 조회화면으로 다시 갖고오기 위해 사용함.
     KeyHolder keyHolder = new GeneratedKeyHolder();
 //    template.update(sql.toString(),param,keyHolder,new String[]{"product_id"});
     template.update(sql.toString(),param,keyHolder,new String[]{"product_id","pname","quantity"});
 //    long productId = keyHolder.getKey().longValue(); //상품아이디
 //    log.info("keyHolder={}", keyHolder.getKeys());
+    // keyHolder에 저장한 자동생성된 primary_key를 가져와서 Long 형태로 변환
     Long product_id = ((BigDecimal)keyHolder.getKeys().get("product_id")).longValue(); //상품아이디
     return product_id;
   }
 
+  // 조회
   @Override
   public Optional<Product> findById(Long productId) {
     StringBuffer sql = new StringBuffer();
@@ -124,5 +129,14 @@ public class ProductDAOImpl implements ProductDAO{
     List<Product> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Product.class));
 
     return list;
+  }
+
+  @Override
+  public int totalCnt() {
+    String sql = "SELECT COUNT(product_id) FROM product ";
+
+    SqlParameterSource param = new MapSqlParameterSource();
+    Integer cnt = template.queryForObject(sql, param, Integer.class);
+    return cnt;
   }
 }
