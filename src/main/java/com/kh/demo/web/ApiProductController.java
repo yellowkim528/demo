@@ -27,6 +27,12 @@ public class ApiProductController {
   public ApiResponse<?> list() {
     List<Product> list = productSVC.findAll();
 
+    try{
+      Thread.sleep(1500);
+    }catch(InterruptedException e){
+      e.printStackTrace();
+    }
+
     ApiResponse<List<Product>> res = null;
     if (list.size() > 0) {
       res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), list);
@@ -76,6 +82,10 @@ public class ApiProductController {
       // @RequestBody : 요청메세지 바디의 json  포맷 문자열 => 자바객체로 변경
       @RequestBody ReqSave reqSave){
     log.info("reqSave={}", reqSave);
+
+
+
+
     // 1)유효성검증
 
     // 2)상품등록처리

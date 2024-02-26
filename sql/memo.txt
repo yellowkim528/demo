@@ -14,3 +14,14 @@
 인증, 인가, 로그아웃
 REST API, client-server통신 => 댓글작성
 교환표준포맷(json, xml)
+
+
+============================================================
+
+1. CSR / SSR
+2. AJAX
+3. 비동기통신
+4. REST API
+5. Promise
+6. fetch
+7. async / await
