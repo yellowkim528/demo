@@ -1,8 +1,8 @@
-let  $productList = '';  // 목록 엘리먼트를 타겟
-let  $loaddingImg = '';  // 로딩 이미지
+let $productList = '';  // 목록 엘리먼트를 타겟
+let $loaddingImg = '';  // 로딩 이미지
 renderHTML();
-function renderHTML(){
-  const $div = document.createElement('div');  
+function renderHTML() {
+  const $div = document.createElement('div');
   $div.innerHTML = `<div>
       <form id='frm'>
         <h3> 상품등록 </h3>
@@ -24,15 +24,15 @@ function renderHTML(){
      <div id='productList'></div>
      <img id='loadding' src='/img/loadding.svg'>
     `;
-  document.body.appendChild($div);  
+  document.body.appendChild($div);
   const $addBtn = $div.querySelector('#addBtn');
-  $addBtn.addEventListener('click',evt=>{
+  $addBtn.addEventListener('click', evt => {
     console.log('등록');
     const formData = new FormData($div.querySelector('#frm'));
     const product = {
-      pname : formData.get('pname'),
-      quantity : formData.get('quantity'),
-      price : formData.get('price')
+      pname: formData.get('pname'),
+      quantity: formData.get('quantity'),
+      price: formData.get('price')
     }
     add(product);
   });
@@ -57,32 +57,32 @@ async function list() {
   $loaddingImg.style.display = 'block';
   const url = `http://localhost:9080/api/products`;
   const option = {
-    method:'GET',
-    headers:{
-      accept:'application/json'
+    method: 'GET',
+    headers: {
+      accept: 'application/json'
     }
   };
   try {
-    const res = await fetch(url,option);
-    if(!res.ok) return new Error('서버응답오류') 
+    const res = await fetch(url, option);
+    if (!res.ok) return new Error('서버응답오류')
     const result = await res.json(); //응답메세지 바디를 읽어 json포맷 문자열=>js객체
-    if(result.header.rtcd == '00'){
+    if (result.header.rtcd == '00') {
       console.log(result.body);
-      const str = result.body.map(item=>
-                                    `<div>
-                                      <span>${item.productId}</span>
-                                      <span>${item.pname}</span>
-                                      <span>${item.quantity}</span>
-                                      <span>${item.price}</span> 
-                                    </div>`).join('');
+      const str = result.body.map(item =>
+        `<div>
+          <span>${item.productId}</span>
+          <span>${item.pname}</span>
+          <span>${item.quantity}</span>
+          <span>${item.price}</span> 
+        </div>`).join('');
 
       $productList.innerHTML = str;
-    }else{
+    } else {
       new Error('목록 실패!');
     }
-  }catch(err){
+  } catch (err) {
     console.error(err.message);
-  }finally{
+  } finally {
     $loaddingImg.style.display = 'none';
   }
 }
@@ -135,8 +135,8 @@ async function findById(pid) {
     // 상품을 찾은경우
     if (result.header.rtcd == '00') {
       console.log(result.body);
-    // 상품을 못찾은경우  
-    }else if (result.header.rtcd == '01') {
+      // 상품을 못찾은경우  
+    } else if (result.header.rtcd == '01') {
       console.log(result.header.rtmsg, result.header.rtdetail);
     } else {
       new Error('조회 실패!');
@@ -147,7 +147,7 @@ async function findById(pid) {
 }
 // findById(263);
 //수정
-async function update(pid,product) {
+async function update(pid, product) {
   const url = `http://localhost:9080/api/products/${pid}`;
   const payload = product
   const option = {
