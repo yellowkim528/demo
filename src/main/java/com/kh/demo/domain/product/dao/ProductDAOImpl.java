@@ -52,7 +52,7 @@ public class ProductDAOImpl implements ProductDAO{
   @Override
   public Optional<Product> findById(Long productId) {
     StringBuffer sql = new StringBuffer();
-    sql.append("select product_id,pname,quantity,price,cdate,udate ");
+    sql.append("select product_id, pname, quantity, price, cdate, udate ");
     sql.append("  from product ");
     sql.append(" where product_id = :productId ");
 
@@ -61,7 +61,7 @@ public class ProductDAOImpl implements ProductDAO{
       Product product = template.queryForObject(sql.toString(), map, BeanPropertyRowMapper.newInstance(Product.class));
       return Optional.of(product);
 
-    }catch (EmptyResultDataAccessException e){
+    } catch (EmptyResultDataAccessException e){
       //조회결과가 없는경우
       return Optional.empty();
     }
