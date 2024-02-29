@@ -1,19 +1,45 @@
 <!DOCTYPE html>
-<html lang="ko"
-      xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>초기화면(dynamic)</title>
 </head>
+
 <body>
   <h3>Hello world~!(dynamic)</h3>
-  <ul>
-    <li><a href="/products">상품관리-SSR</a></li>
-    <li><a href="/api/view/products">상품관리-CSR</a></li>
-    <li><a href="/pubdata/news">뉴스검색</a></li>
-    <li><a href="/pubdata/stock">주가</a></li>
-    <li><a href="/members/join">회원가입</a></li>
-  </ul>
+  <!--  로그인시 화면-->
+  <th:block th:if="${session.loginOK}">
+    <p th:text="${session.loginOK.nickname}"></p>
+    <ul>
+      <li><a href="/products">상품관리-SSR</a></li>
+      <li><a href="/api/view/products">상품관리-CSR</a></li>
+      <li><a href="/pubdata/news">뉴스검색</a></li>
+      <li><a href="/pubdata/stock">주가</a></li>
+      <li><a href="#" id="logout">로그아웃</a></li>
+    </ul>
+  </th:block>
+  <!--  비로그인시 화면-->
+  <th:block th:unless="${session.loginOK}">
+    <ul>
+      <li><a href="/members/join">회원가입</a></li>
+      <li><a href="/login">로그인</a></li>
+    </ul>
+  </th:block>
+  <script>
+    logout.addEventListener('click', evt => {
+      evt.preventDefault();   // 기본 이벤트 제거
+      fetch('/logout', { method: 'POST', body: null })
+        .then(res => res.text())
+        .then(res => {
+          if (res === 'OK') {
+            location.href = '/';
+          }
+        })
+        .catch(console.log);
+    });
+  </script>
 </body>
+
 </html>

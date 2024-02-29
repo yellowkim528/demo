@@ -31,7 +31,8 @@ REST API, client-server통신 => 댓글작성
 1. 회원테이블 생성
   Member(member_id, email, pw, nickname, role)
 2. DAO IF => DAO Imple
-  in : 
+  Entity 클래스 Member 
+  in : email, pw
 3. DAO 테스트
 4. Service
 5. Controller

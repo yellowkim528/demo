@@ -3,7 +3,6 @@ package com.kh.demo.domain.member.dao;
 import com.kh.demo.domain.entity.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -18,8 +17,8 @@ import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
-@Repository("memberDAOImpl")
-@Primary    // 동일타입의 객체가 2개이상 존재할 때 최우선순위로 주입받을 수 있도록 설정하는 어노테이션
+@Repository
+//@Primary    // 동일타입의 객체가 2개이상 존재할 때 최우선순위로 주입받을 수 있도록 설정하는 어노테이션
 @RequiredArgsConstructor
 public class MemberDAOImpl implements MemberDAO {
 
@@ -66,7 +65,7 @@ public class MemberDAOImpl implements MemberDAO {
     sql.append(" where email = :email ");
     sql.append("   and passwd = :passwd ");
 
-    Map<String, String> param = Map.of("email", email, "passwd", passwd);
+    Map param = Map.of("email", email, "passwd", passwd);
 
     //단일행
     //queryForObject는 못찾으면 예외를 발생시킴 => try catch 사용

@@ -19,7 +19,7 @@ public class MemberController {
 
   public final MemberSVC memberSVC;
 
-  //회원가입
+  //회원가입양식
   @GetMapping("/join")
   public String joinForm(){
     return "member/joinForm";
@@ -31,13 +31,11 @@ public class MemberController {
     log.info("joinForm={}",joinForm);
     //1)유효성 검증
 
-    //2)처리
+    //2)가입처리
     Member member = new Member();
     BeanUtils.copyProperties(joinForm, member);
     Long memberId = memberSVC.joinMember(member);
     log.info("memberId={}", memberId);
-
-
 
     return "redirect:/";
   }
