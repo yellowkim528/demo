@@ -25,3 +25,16 @@ REST API, client-server통신 => 댓글작성
 5. Promise
 6. fetch
 7. async / await
+
+------------------------------------------------------------
+
+1. 회원테이블 생성
+  Member(member_id, email, pw, nickname, role)
+2. DAO IF => DAO Imple
+  in : 
+3. DAO 테스트
+4. Service
+5. Controller
+6. Controller 테스트 => POSTMAN 테스트
+7. view : 회원가입
+

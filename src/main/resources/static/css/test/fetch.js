@@ -1,6 +1,8 @@
 
 // 프로미스 함수(매개값을 함수로(reslove,reject))
-// 프로미스 객체 : 1.상태정보(pending, fulfilled, rejected) 2.처리결과정보(성공,실패)
+// 프로미스 객체 : 
+// 1.상태정보(pending, fulfilled, rejected) 
+// 2.처리결과정보(성공,실패)
 const promise = new Promise((resolve,reject)=>{
   // 비동기로직 위치하는곳
   // 비동기로직 성공하면
