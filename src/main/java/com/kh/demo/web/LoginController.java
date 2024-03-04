@@ -32,7 +32,7 @@ public class LoginController {
   @PostMapping("/login")
   public String login(LoginForm loginForm, HttpServletRequest request) {
     log.info("loginForm={}", loginForm);
-// 포스트맨으로 확인
+  // 포스트맨으로 확인
     // 1) 유효성 체크
     // 2) 회원 유무 체크
     // 2-1) 회원 아이디 존재 유무 체크

@@ -1,9 +1,12 @@
 package com.kh.demo.web;
 
+import com.kh.demo.domain.entity.Member;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import com.kh.demo.web.form.product.AddForm;
 import com.kh.demo.web.form.product.UpdateForm;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -181,7 +184,16 @@ public class ProductControllerV2 {
 
   //목록
   @GetMapping   // GET http://localhost:9080/products
-  public String findAll(Model model){
+  public String findAll(Model model, HttpServletRequest request){
+
+
+    //로그인 검사(세션체크)
+    HttpSession session = request.getSession(false);
+    if (session != null) {
+      Member member = (Member) session.getAttribute("loginOK");
+    } else {
+      return "redirect:/";
+    }
 
     List<Product> list = productSVC.findAll();
     model.addAttribute("list", list);

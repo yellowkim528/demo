@@ -28,7 +28,8 @@
     </ul>
   </th:block>
   <script>
-    logout.addEventListener('click', evt => {
+    const $logout = document.getElementById('logout');
+    $logout?.addEventListener('click', evt => {
       evt.preventDefault();   // 기본 이벤트 제거
       fetch('/logout', { method: 'POST', body: null })
         .then(res => res.text())
