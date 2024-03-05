@@ -3,7 +3,8 @@ package com.kh.demo.web;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import com.kh.demo.web.api.ApiResponse;
-import com.kh.demo.web.req.*;
+import com.kh.demo.web.api.ResCode;
+import com.kh.demo.web.req.product.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -21,22 +22,51 @@ public class ApiProductController {
 
   private final ProductSVC productSVC;
 
+//  // 목록
+////  @ResponseBody   // @RestController로 퉁치기.
+//  @GetMapping
+//  public ApiResponse<?> list() {
+//    List<Product> list = productSVC.findAll();
+//
+//    try{
+//      Thread.sleep(1500);
+//    }catch(InterruptedException e){
+//      e.printStackTrace();
+//    }
+//
+//    ApiResponse<List<Product>> res = null;
+//    if (list.size() > 0) {
+//      res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), list);
+//      res.setTotalCnt(productSVC.totalCnt());
+//    } else {
+//      res = ApiResponse.createApiResponseDetail(
+//          ResCode.OK.getCode(), ResCode.OK.name(), "등록된 상품이 1건도 없습니다.",list);
+//    }
+//    return res;
+//  }
+
+
   // 목록
-//  @ResponseBody   // @RestController로 퉁치기.
   @GetMapping
-  public ApiResponse<?> list() {
-    List<Product> list = productSVC.findAll();
+  public ApiResponse<?> list(
+      @RequestParam("reqPage")Long reqPage,
+      @RequestParam("reqCnt")Long reqCnt
+      ) {
 
     try{
       Thread.sleep(1500);
     }catch(InterruptedException e){
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
+
+    List<Product> list = productSVC.findAll(reqPage,reqCnt);
 
     ApiResponse<List<Product>> res = null;
     if (list.size() > 0) {
       res = ApiResponse.createApiResponse(ResCode.OK.getCode(), ResCode.OK.name(), list);
       res.setTotalCnt(productSVC.totalCnt());
+      res.setReqPage(reqPage.intValue());
+      res.setRecCnt(reqCnt.intValue());
     } else {
       res = ApiResponse.createApiResponseDetail(
           ResCode.OK.getCode(), ResCode.OK.name(), "등록된 상품이 1건도 없습니다.",list);
@@ -82,9 +112,6 @@ public class ApiProductController {
       // @RequestBody : 요청메세지 바디의 json  포맷 문자열 => 자바객체로 변경
       @RequestBody ReqSave reqSave){
     log.info("reqSave={}", reqSave);
-
-
-
 
     // 1)유효성검증
 

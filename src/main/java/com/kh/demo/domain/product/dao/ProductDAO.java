@@ -14,7 +14,9 @@ public interface ProductDAO {
 
   //목록
   List<Product> findAll();
-  
+  //목록(페이징)
+  List<Product> findAll(Long reqPage, Long recordCnt);
+
   //단건삭제
   int deleteById(Long productId);
 

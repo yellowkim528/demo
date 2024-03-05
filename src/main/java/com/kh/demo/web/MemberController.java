@@ -37,6 +37,6 @@ public class MemberController {
     Long memberId = memberSVC.joinMember(member);
     log.info("memberId={}", memberId);
 
-    return "redirect:/";
+    return (memberId != null) ? "redirect:/login" : "redirect:/join";
   }
 }

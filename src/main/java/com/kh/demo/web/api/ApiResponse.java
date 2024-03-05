@@ -42,4 +42,16 @@ public class ApiResponse<T> {
   public static <T> ApiResponse<T> createApiResponseDetail(String rtcd, String rtmsg, String rtdetail, T body) {
     return new ApiResponse<T>(new Header(rtcd, rtmsg, rtdetail),body);
   }
+
+  public void setTotalCnt(int totalCnt) {
+    this.totalCnt = totalCnt;
+  }
+
+  public void setRecCnt(int recCnt) {
+    this.recCnt = recCnt;
+  }
+
+  public void setReqPage(int reqPage) {
+    this.reqPage = reqPage;
+  }
 }

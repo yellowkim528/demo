@@ -40,7 +40,7 @@ class MemberDAOImplTest {
   @DisplayName("이메일체크")
   void existEmail() {
 
-    boolean exist = memberDAO.existMemberId("user1@kh.com");
+    boolean exist = memberDAO.existEmail("user1@kh.com");
 
     Assertions.assertThat(exist).isEqualTo(true);
 

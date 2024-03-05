@@ -1,4 +1,4 @@
-package com.kh.demo.web.req;
+package com.kh.demo.web.req.product;
 
 import lombok.Data;
 

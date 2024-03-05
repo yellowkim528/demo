@@ -7,8 +7,12 @@
 </head>
 <body>
   <h3>회원가입</h3>
-  <form action="/members/join" method="POST">
-    <p><input type="text" name="email" placeholder="이메일" ></p>
+  <form id="frm" action="/members/join" method="POST">
+    <p>
+      <input type="text" name="email" id="email" data-dupchk="" placeholder="이메일" >
+      <button type="button" id="dupchkBtn">중복체크</button>
+      <span class="errmsg" id="errmsg_email"></span>
+    </p>
     <p><input type="password" name="passwd" placeholder="비밀번호" ></p>
     <p><input type="password" placeholder="비밀번호확인" ></p>
     <p><input type="text" name="nickname" placeholder="닉네임" ></p>
@@ -16,6 +20,57 @@
   </form>
   
 <script>
+
+  frm.addEventListener('submit', evt=>{
+    evt.preventDefault();   //submit 차단
+    // 이메일 중복체크 확인
+    if (!email.dataset.dupchk || email.dataset === 'ok') {
+      errmsg_email.textContent = '이메일 중복체크 바랍니다!';
+      return;
+    }
+    evt.currentTarget.submit();
+  })
+
+  dupchkBtn.addEventListener('click', evt=>{
+        console.log("중복체크");
+        if(email.value.trim().length == 0){
+          errmsg_email.textContent = '이메일 입력바랍니다.'
+          email.focus();
+        }
+        dupchk();
+  })
+  async function dupchk(){
+    const $email = document.getElementById('email');
+    const email = {};
+    email['email'] = $email.value;
+    const url = `/api/members/dupchk`;
+    const options = {
+      method : 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        accept: 'application/json',
+      },
+      body: JSON.stringify(email)
+    }
+    const response = await fetch(url, options);
+    const msgbody = await response.json();
+    
+    if(msgbody.header.rtcd == '21'){
+      console.log('email exits');
+      errmsg_email.textContent = '이미 존재하는 Email 입니다.';
+      $email.dataset.dupchk = 'ok';
+      $email.focus();
+    } else {
+      $email.dataset.dupchk = 'nok';
+      errmsg_email.textContent = '사용가능한 Email 입니다.';
+      $email.disabled = true;
+      dupchkBtn.disabled = true;
+      console.log('email none');
+    }
+
+
+
+  }
 
 </script>  
 </body>

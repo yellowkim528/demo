@@ -20,6 +20,8 @@ public interface ProductSVC {
   
   //목록
   List<Product> findAll();
+  //목록(페이징)
+  List<Product> findAll(Long reqPage, Long recordCnt);
 
   //수정
   int updateById(Long productId, Product product);

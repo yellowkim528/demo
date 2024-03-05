@@ -118,7 +118,7 @@ public class ProductDAOImpl implements ProductDAO{
     return updateRowCnt;
   }
 
-  //목록
+  //목록 전체
   @Override
   public List<Product> findAll() {
     StringBuffer sql = new StringBuffer();
@@ -127,6 +127,20 @@ public class ProductDAOImpl implements ProductDAO{
     sql.append("order by product_id desc ");
 
     List<Product> list = template.query(sql.toString(), BeanPropertyRowMapper.newInstance(Product.class));
+
+    return list;
+  }
+
+  @Override
+  public List<Product> findAll(Long reqPage, Long recCnt) {
+    StringBuffer sql = new StringBuffer();
+    sql.append("  select product_id,pname,quantity,price,cdate,udate ");
+    sql.append("    from product ");
+    sql.append("order by product_id desc ");
+    sql.append("offset (:reqPage-1) * :recCnt rows fetch first :recCnt rows only ");
+
+    Map<String, Long> param = Map.of("reqPage", reqPage, "recCnt", recCnt);
+    List<Product> list = template.query(sql.toString(), param, BeanPropertyRowMapper.newInstance(Product.class));
 
     return list;
   }

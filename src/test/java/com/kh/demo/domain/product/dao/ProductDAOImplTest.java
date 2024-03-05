@@ -106,4 +106,32 @@ class ProductDAOImplTest {
 
 
   }
+
+  @Test
+  @DisplayName("상품여러건등록")
+  void saveMultipleProducts() {
+
+    Long start = 1L;
+    Long end = 115L;
+    for (Long i=start; i<=end; i++){
+      Product product = new Product();
+      product.setPname("노트북"+i);
+      product.setQuantity(i+10);
+      product.setPrice(i*2);
+      Long productId = productDAO.save(product);
+    }
+//    log.info("productId={}{}", productId, "2");
+
+  }
+
+  @Test
+  @DisplayName("상품목록(페이징)")
+  void findAllByPaging() {
+    List<Product> list = productDAO.findAll(1L, 10L);
+
+    for (Product product : list) {
+      log.info("product={}", product);
+    }
+    log.info("size={}", list.size());
+  }
 }

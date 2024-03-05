@@ -32,8 +32,8 @@ public class MemberSVCImpl implements MemberSVC {
 
   // 이메일 존재 조회
   @Override
-  public boolean existMemberId(String email) {
-    return memberDAO.existMemberId(email);
+  public boolean existEmail(String email) {
+    return memberDAO.existEmail(email);
   }
 
   // 회원 조회

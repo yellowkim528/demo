@@ -1,12 +1,9 @@
 package com.kh.demo.web;
 
-import com.kh.demo.domain.entity.Member;
 import com.kh.demo.domain.entity.Product;
 import com.kh.demo.domain.product.svc.ProductSVC;
 import com.kh.demo.web.form.product.AddForm;
 import com.kh.demo.web.form.product.UpdateForm;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -182,22 +179,27 @@ public class ProductControllerV2 {
     return "redirect:/products/{pid}/detail";
   }
 
-  //목록
-  @GetMapping   // GET http://localhost:9080/products
-  public String findAll(Model model, HttpServletRequest request){
+//  //목록
+//  @GetMapping   // GET http://localhost:9080/products
+//  public String findAll(Model model){
+//
+//    List<Product> list = productSVC.findAll();
+//    model.addAttribute("list", list);
+//
+//    return "productv2/all";
+//  }
 
+  //목록(페이징)
+  @GetMapping   // GET http://localhost:9080/products?reqPage=2&reqCnt=10
+  public String findAllByPaging(
+      Model model,
+      @RequestParam("reqPage") Long reqPage,  // 요청페이지
+      @RequestParam("reqCnt") Long reqCnt     // 레코드 수
+  ){
 
-    //로그인 검사(세션체크)
-    HttpSession session = request.getSession(false);
-    if (session != null) {
-      Member member = (Member) session.getAttribute("loginOK");
-    } else {
-      return "redirect:/";
-    }
-
-    List<Product> list = productSVC.findAll();
+    List<Product> list = productSVC.findAll(reqPage,reqCnt);
     model.addAttribute("list", list);
 
-    return "productv2/all";
+    return "productv2/allByPaging";
   }
 }
