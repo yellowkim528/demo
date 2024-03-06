@@ -193,12 +193,19 @@ public class ProductControllerV2 {
   @GetMapping   // GET http://localhost:9080/products?reqPage=2&reqCnt=10
   public String findAllByPaging(
       Model model,
-      @RequestParam("reqPage") Long reqPage,  // 요청페이지
-      @RequestParam("reqCnt") Long reqCnt     // 레코드 수
+      @RequestParam(value = "reqPage", defaultValue = "1") Long reqPage, // 요청 페이지
+      @RequestParam(value = "reqCnt", defaultValue = "10") Long reqCnt,   // 레코드 수
+      @RequestParam(value = "cpgs", defaultValue = "1") Long cpgs,   //페이지 그룹 시작번호
+      @RequestParam(value = "cp", defaultValue = "1") Long cp   // 현재 페이지
   ){
 
-    List<Product> list = productSVC.findAll(reqPage,reqCnt);
+    List<Product> list = productSVC.findAll(reqPage, reqCnt);
+    int totalCnt = productSVC.totalCnt();
+
     model.addAttribute("list", list);
+    model.addAttribute("totalCnt", totalCnt);
+    model.addAttribute("cpgs", cpgs);
+    model.addAttribute("cp", cp);
 
     return "productv2/allByPaging";
   }

@@ -1,4 +1,4 @@
-package com.kh.demo.web.Interceptor;
+package com.kh.demo.web.interceptor;
 
 import com.kh.demo.web.form.member.SessionConst;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,31 +10,27 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import java.net.URLEncoder;
 
 @Slf4j
-public class LoginCheckIntercepter implements HandlerInterceptor {
+public class LoginCheckInterCeptor implements HandlerInterceptor {
   @Override
-  public boolean preHandle(
-      HttpServletRequest request,
-      HttpServletResponse response,
-      Object handler) throws Exception {
-
+  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
     //리다이렉트 URL만들기
     String redirectUrl = null;
 
     String requestURI = request.getRequestURI();
-    log.info("요청uri={}",requestURI);              // /pubdata/news
-    log.info("요청url={}",request.getRequestURL()); // http://localhost:9080/pubdata/news
+    log.info("요청uri={}",requestURI);              // /products/news
+    log.info("요청url={}",request.getRequestURL()); // http://localhost:9080/products/news
 
-    //요청 파리미터 정보가 있는 경우 http://localhost:9080/pubdata/news?a=1&b=2
+    //요청 파리미터 정보가 있는 경우 http://localhost:9080/products/news?a=1&b=2
     if(request.getQueryString() != null){
       log.info("요청url getQueryString={}",request.getQueryString());
       //요청파리미터 인코딩
       String queryString = URLEncoder.encode(request.getQueryString(),"UTF-8");   //a=1&b=2
       StringBuffer str = new StringBuffer();
-      redirectUrl = str.append(requestURI).append("?").append(queryString).toString(); //pubdata?a=1&b=2
+      redirectUrl = str.append(requestURI).append("?").append(queryString).toString(); //products?a=1&b=2
       log.info("redirectUrl={}",redirectUrl);
     }else{
-      //요청 파리미터 정보가 없는 경우 http://localhost:9080/pubdata/news
-      redirectUrl = requestURI;    // /pubdata/news
+      //요청 파리미터 정보가 없는 경우 http://localhost:9080/products/news
+      redirectUrl = requestURI;    // /products/news
     }
 
     //세션 정보 읽어오기

@@ -27,8 +27,10 @@ class Pagination {
       i < this.currentPageGroupStart + this.pagesPerPage && i <= totalPages;
       i++
     ) {
+      //현재 페이지인경우
       if (i === this.currentPage) {
         pageNavigation += `<button class="active" id="page${i}">${i}</button> `;
+      //현재 페이지아닌경우
       } else {
         pageNavigation += `<button id="page${i}">${i}</button> `;
       }
@@ -47,6 +49,10 @@ class Pagination {
 
   setCurrentPage(pageNumber) {
     this.currentPage = pageNumber;
+  }
+
+  setCurrentPageGroupStart(cpgs) {
+    this.currentPageGroupStart = cpgs;
   }
 
   setNextPageGroup() {
@@ -80,6 +86,7 @@ class Pagination {
       document.getElementById('first').addEventListener('click', evt => {
         this.setCurrentPage(1);
         this.currentPageGroupStart = 1;
+        callback();
         this.displayPagination(callback);
       });
     }
@@ -87,7 +94,8 @@ class Pagination {
       document.getElementById('prev').addEventListener('click', evt => {
         if (this.currentPageGroupStart > 1) {
           this.setPrevPageGroup();
-          this.setCurrentPage(this.currentPageGroupStart);
+          this.setCurrentPage(this.currentPageGroupStart+this.recordsPerPage-1);
+          callback();
           this.displayPagination(callback);
         }
       });
@@ -100,6 +108,7 @@ class Pagination {
         ) {
           this.setNextPageGroup();
           this.setCurrentPage(this.currentPageGroupStart);
+          callback();
           this.displayPagination(callback);
         }
       });
@@ -110,6 +119,7 @@ class Pagination {
         this.currentPageGroupStart =
           totalPages - (totalPages % this.pagesPerPage) + 1;
         this.setCurrentPage(totalPages);
+        callback();
         this.displayPagination(callback);
       });
     }
@@ -151,4 +161,20 @@ function formatDate(date) {
     return `${year}-${month}-${day}`;
 }
 
-export { Pagination, chageDateTime,formatDate };
+//숫자문자열을 입력받아 3자리단위로 콤마를 넣어 반환
+// in : 123456
+// out : 123,456
+function addCommasToNumberString(inputString) {
+    // 입력받은 문자열에서 숫자만 추출
+    let numberPart = inputString.replace(/[^0-9]/g, '');
+
+    // 숫자를 천단위로 콤마를 넣어 반환
+    return Number(numberPart).toLocaleString();
+}
+
+// 예시
+let inputNumberString = "1234567890";
+let formattedNumber = addCommasToNumberString(inputNumberString);
+console.log(formattedNumber);  // 출력: "1,234,567,890"
+
+export { Pagination, chageDateTime, formatDate, addCommasToNumberString };

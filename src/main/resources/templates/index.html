@@ -12,8 +12,9 @@
 <!--  로그인시 화면-->
 <th:block th:if="${session.loginMember}">
   <p th:text="${session.loginMember.nickname}"></p>
+<!--  /products?reqPage=1&reqCnt=10-->
   <ul>
-    <li><a href="/products">상품관리-SSR</a></li>
+    <li><a href="/products" th:href="@{/products}">상품관리-SSR</a></li>
     <li><a href="/api/view/products">상품관리-CSR</a></li>
     <li><a href="/pubdata/stock">주가</a></li>
     <li><a href="/pubdata/news">뉴스검색</a></li>

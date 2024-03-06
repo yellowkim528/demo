@@ -13,7 +13,6 @@ public class ApiViewController {
   @GetMapping("/products")
   public String products(){
 
-    return "/api/view/products";
+    return "api/view/products";
   }
-
 }

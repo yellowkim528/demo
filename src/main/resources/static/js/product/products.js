@@ -1,12 +1,12 @@
-import { Pagination } from "../common";
+import {Pagination} from '/js/common.js'
 
 //페이징 객체 생성
 const pagination = new Pagination(10, 10); // 한페이지에 보여줄 레코드건수,한페이지에 보여줄 페이지수
 
-let $productList = '';  // 목록 엘리먼트를 타겟
-let $loaddingImg = '';  // 로딩 이미지
+let  $productList = '';  // 목록 엘리먼트를 타겟
+let  $loaddingImg = '';  // 로딩 이미지
 renderHTML();
-function renderHTML() {
+function renderHTML(){
   const $div = document.createElement('div');
   $div.innerHTML = `<div>
       <form id='frm'>
@@ -14,7 +14,7 @@ function renderHTML() {
         <div>
           <label for="pname">상품명</label>
           <input id='pname' name='pname' type="text">
-        </div>        
+        </div>
         <div>
           <label for="quantity">수량</label>
           <input id='quantity' name='quantity' type="text">
@@ -25,24 +25,23 @@ function renderHTML() {
         </div>
         <div><button id='addBtn' type='button'>등록</button></div>
       </form>
-     </div>  
+     </div>
      <div id='productList'></div>
+     <div id='pagination'></div>
      <img id='loadding' src='/img/loadding.svg'>
     `;
   document.body.appendChild($div);
   const $addBtn = $div.querySelector('#addBtn');
-  $addBtn.addEventListener('click', evt => {
+  $addBtn.addEventListener('click',evt=>{
     console.log('등록');
     const formData = new FormData($div.querySelector('#frm'));
     const product = {
-      pname: formData.get('pname'),
-      quantity: formData.get('quantity'),
-      price: formData.get('price')
+      pname : formData.get('pname'),
+      quantity : formData.get('quantity'),
+      price : formData.get('price')
     }
     add(product);
   });
-
-  $div.style.position = 'relative';
 
   //상품목록
   $productList = $div.querySelector('#productList');
@@ -50,8 +49,8 @@ function renderHTML() {
   //로딩 이미지
   $loaddingImg = $div.querySelector('#loadding');
   $loaddingImg.style.position = 'absolute';
-  $loaddingImg.style.top = '10%';
-  $loaddingImg.style.left = '50%';
+  $loaddingImg.style.top = '50vh';
+  $loaddingImg.style.left = '50vw';
   $loaddingImg.style.transform = 'translate(-50%,-50%)';
   $loaddingImg.style.display = 'none';
   list();
@@ -59,42 +58,43 @@ function renderHTML() {
 
 //목록
 async function list() {
-  const reqCnt = pagination.recordsPerPage; // 페이지당 레코드수
-  const reqPage = pagination.currentPage;   // 요청 페이지
+  const reqPage = pagination.currentPage;   //요청 페이지
+  const reqCnt = pagination.recordsPerPage; //페이지당 레코드수
 
   $loaddingImg.style.display = 'block';
   const url = `http://localhost:9080/api/products?reqPage=${reqPage}&reqCnt=${reqCnt}`;
   const option = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json'
+    method:'GET',
+    headers:{
+      accept:'application/json'
     }
   };
   try {
-    const res = await fetch(url, option);
-    if (!res.ok) return new Error('서버응답오류')
+    const res = await fetch(url,option);
+    if(!res.ok) return new Error('서버응답오류')
     const result = await res.json(); //응답메세지 바디를 읽어 json포맷 문자열=>js객체
-    if (result.header.rtcd == '00') {
+    if(result.header.rtcd == '00'){
       console.log(result.body);
-      const str = result.body.map(item =>
-        `<div>
-          <span>${item.productId}</span>
-          <span>${item.pname}</span>
-          <span>${item.quantity}</span>
-          <span>${item.price}</span> 
-        </div>`).join('');
+      const str = result.body.map(item=>
+                                    `<div>
+                                      <span>${item.productId}</span>
+                                      <span>${item.pname}</span>
+                                      <span>${item.quantity}</span>
+                                      <span>${item.price}</span>
+                                    </div>`).join('');
 
       $productList.innerHTML = str;
 
-      if(!pagination.getTotalRecords()) pagination.setTotalRecords(res.totalCnt);
+      //총 레코드 건수
+      pagination.setTotalRecords(result.totalCnt);
       pagination.displayPagination(list);
 
-    } else {
+    }else{
       new Error('목록 실패!');
     }
-  } catch (err) {
+  }catch(err){
     console.error(err.message);
-  } finally {
+  }finally{
     $loaddingImg.style.display = 'none';
   }
 }
@@ -147,8 +147,8 @@ async function findById(pid) {
     // 상품을 찾은경우
     if (result.header.rtcd == '00') {
       console.log(result.body);
-      // 상품을 못찾은경우  
-    } else if (result.header.rtcd == '01') {
+    // 상품을 못찾은경우
+    }else if (result.header.rtcd == '01') {
       console.log(result.header.rtmsg, result.header.rtdetail);
     } else {
       new Error('조회 실패!');
@@ -159,7 +159,7 @@ async function findById(pid) {
 }
 // findById(263);
 //수정
-async function update(pid, product) {
+async function update(pid,product) {
   const url = `http://localhost:9080/api/products/${pid}`;
   const payload = product
   const option = {
